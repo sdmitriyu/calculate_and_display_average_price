@@ -1,7 +1,10 @@
 import data_download as dd
 import data_plotting as dplt
-from analisis_data import calculate_and_display_average_price
+import logging
+import analisis_data as ad
 
+logging.basicConfig(level=logging.DEBUG, filename='journal.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 def main():
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
@@ -14,7 +17,9 @@ def main():
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period)
 
-    calculate_and_display_average_price(stock_data)
+    ad.calculate_and_display_average_price(stock_data)
+
+    ad.notify_if_strong_fluctuations()
 
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
@@ -25,3 +30,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
