@@ -14,17 +14,19 @@ def main():
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
 
-    # Fetch stock data
+    # Получение данных о запасах
     stock_data = dd.fetch_stock_data(ticker, period)
 
     ad.calculate_and_display_average_price(stock_data)
 
-    ad.notify_if_strong_fluctuations()
+    threshold = 30
 
-    # Add moving average to the data
+    ad.notify_if_strong_fluctuations(stock_data, threshold)
+
+    # Добавьте скользящее среднее значение к данным
     stock_data = dd.add_moving_average(stock_data)
 
-    # Plot the data
+    # Построим график данных
     dplt.create_and_save_plot(stock_data, ticker, period)
 
 

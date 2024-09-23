@@ -18,15 +18,11 @@ def calculate_and_display_average_price(stock_data):
 
     # Вычисляем среднюю цену закрытия
     average_price = stock_data['Close'].mean()
-    print(stock_data)
 
     # Выводим среднюю цену закрытия
     print(f"Средняя цена закрытия за заданный период: {average_price}")
 
 
-data = dd.add_moving_average()
-
-threshold = 0.3
 
 
 def notify_if_strong_fluctuations(data, threshold):
@@ -38,9 +34,10 @@ def notify_if_strong_fluctuations(data, threshold):
     Уведомление:
         Печатает сообщение о сильных колебаниях, если разница между максимальной и минимальной ценой превышает порог.
     """
-    if not data:
-        print("Нет данных для анализа.")
-        return
+
+    # if not data:
+    #     print("Нет данных для анализа.")
+    #     return
 
     max_price = max(data['Close'])
     min_price = min(data['Close'])
