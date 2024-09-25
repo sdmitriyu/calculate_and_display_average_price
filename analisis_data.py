@@ -1,6 +1,5 @@
 import logging
 import pandas as pd
-import data_download as dd
 
 def calculate_and_display_average_price(stock_data):
     # Проверяем, что входной параметр — это DataFrame
@@ -53,3 +52,24 @@ def notify_if_strong_fluctuations(data, threshold):
         print(f"Максимальная цена: {max_price}")
         print(f"Минимальная цена: {min_price}")
         print(f"Колебание: {fluctuation:.2f} %")
+
+
+
+def export_data_to_csv(data, filename):
+    """
+    Экспортирует данные об акциях в CSV файл.
+
+    :param data: DataFrame с данными об акциях
+    :param filename: Имя файла, в который будут сохранены данные
+    """
+    try:
+        # Проверяем, что данные представлены в формате DataFrame
+        if not isinstance(data, pd.DataFrame):
+            raise ValueError("Данные должны быть представлены в формате pandas DataFrame")
+
+        # Используем метод to_csv для сохранения данных в CSV файл
+        data.to_csv(filename, index=False)
+        print(f"Данные успешно экспортированы в файл {filename}")
+
+    except Exception as e:
+        print(f"Ошибка при экспорте данных: {e}")
