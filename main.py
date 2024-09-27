@@ -27,6 +27,8 @@ def main():
 
     ad.export_data_to_csv(stock_data, filename)
 
+    ad.calculate_macd(stock_data)
+
     # Добавьте скользящее среднее значение к данным
     stock_data = dd.add_moving_average(stock_data)
 

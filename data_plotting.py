@@ -3,8 +3,10 @@ import pandas as pd
 
 
 def create_and_save_plot(data, ticker, period, filename=None):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 18))  # Увеличенное полотно для трех графиков
 
+    # График цен
+    plt.subplot(3, 1, 1)  # Первый график
     if 'Date' not in data:
         if pd.api.types.is_datetime64_any_dtype(data.index):
             dates = data.index.to_numpy()
@@ -17,15 +19,51 @@ def create_and_save_plot(data, ticker, period, filename=None):
         if not pd.api.types.is_datetime64_any_dtype(data['Date']):
             data['Date'] = pd.to_datetime(data['Date'])
         plt.plot(data['Date'], data['Close'], label='Close Price')
-        plt.plot(data['Date'], data['Moving_Average'], label='Moving Average')
+        plt.plot(data['Date'], data['Moving_Average'], label='Moving_Average')
 
     plt.title(f"{ticker} Цена акций с течением времени")
     plt.xlabel("Дата")
     plt.ylabel("Цена")
     plt.legend()
 
+    # График RSI
+    if 'RSI' in data.columns:
+        plt.subplot(3, 1, 2)  # Второй график
+        plt.plot(data['Date'] if 'Date' in data else data.index, data['RSI'], label='RSI', color='purple')
+        plt.axhline(30, linestyle='--', alpha=0.5, color='red')
+        plt.axhline(70, linestyle='--', alpha=0.5, color='green')
+        plt.title('RSI')
+        plt.legend()
+    else:
+        print("Колонка 'RSI' отсутствует в данных.")
+
+    # График MACD
+    if 'MACD' in data.columns and 'Signal Line' in data.columns:
+        plt.subplot(3, 1, 3)  # Третий график
+        plt.plot(data['Date'] if 'Date' in data else data.index, data['MACD'], label='MACD', color='blue')
+        plt.plot(data['Date'] if 'Date' in data else data.index, data['Signal Line'], label='Signal Line', color='red')
+        plt.title('MACD')
+        plt.legend()
+    else:
+        print("Колонки 'MACD' или 'Signal Line' отсутствуют в данных.")
+
+    # Сохранение файла
     if filename is None:
         filename = f"{ticker}_{period}_stock_price_chart.png"
-
     plt.savefig(filename)
     print(f"График сохранен как {filename}")
+
+
+# def plot_indicators(data_indication):
+#     plt.figure(figsize=(14, 7))
+#
+#     # График цены закрытия
+#     plt.subplot(3, 1, 1)
+#     plt.plot(data_indication['Close'], label='Close Price')
+#     plt.legend()
+#     plt.title('Технические индикаторы')
+#
+#
+#
+#     plt.tight_layout()
+#     plt.show()
