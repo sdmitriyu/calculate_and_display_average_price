@@ -14,25 +14,29 @@ def main():
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
 
-    # Получение данных о запасах
+    # Получает данные о запасах
     stock_data = dd.fetch_stock_data(ticker, period)
 
+    # Проверяет, лигетивен ли DataFrame, и выводит из него среднюю цену закрытия акции
     ad.calculate_and_display_average_price(stock_data)
 
     threshold = 30
 
+    # Анализирует данные и уведомляет пользователя, если цена акций колебалась более чем на заданный процент за период.
     ad.notify_if_strong_fluctuations(stock_data, threshold)
 
     filename = "Information_about_promotions"
 
+    # Экспортирует данные в CSV файл.
     ad.export_data_to_csv(stock_data, filename)
 
+    # Добавляет дополнительные технические индикаторы
     ad.calculate_macd(stock_data)
 
-    # Добавьте скользящее среднее значение к данным
+    # Добавляет скользящее среднее значение к данным
     stock_data = dd.add_moving_average(stock_data)
 
-    # Построим график данных
+    # Строит график данных
     dplt.create_and_save_plot(stock_data, ticker, period)
 
 

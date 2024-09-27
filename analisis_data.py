@@ -76,6 +76,7 @@ def export_data_to_csv(data, filename):
 
 
 
+# Добавление дополнительных технических индикаторов
 def calculate_macd(data, short_window=12, long_window=26, signal_window=9):
     short_ema = data['Close'].ewm(span=short_window, adjust=False).mean()
     long_ema = data['Close'].ewm(span=long_window, adjust=False).mean()

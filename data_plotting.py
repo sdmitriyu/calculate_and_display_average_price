@@ -52,18 +52,3 @@ def create_and_save_plot(data, ticker, period, filename=None):
         filename = f"{ticker}_{period}_stock_price_chart.png"
     plt.savefig(filename)
     print(f"График сохранен как {filename}")
-
-
-# def plot_indicators(data_indication):
-#     plt.figure(figsize=(14, 7))
-#
-#     # График цены закрытия
-#     plt.subplot(3, 1, 1)
-#     plt.plot(data_indication['Close'], label='Close Price')
-#     plt.legend()
-#     plt.title('Технические индикаторы')
-#
-#
-#
-#     plt.tight_layout()
-#     plt.show()
