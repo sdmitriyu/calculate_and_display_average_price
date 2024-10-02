@@ -2,45 +2,66 @@ import data_download as dd
 import data_plotting as dplt
 import logging
 import analisis_data as ad
+import argparse
+from datetime import datetime
 
-logging.basicConfig(level=logging.DEBUG, filename='journal.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename='journal.log',
+    filemode='w',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
 
 def main():
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
-    print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
-    print("Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.")
+    print(
+        "Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc)."
+    )
+    print(
+        "Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс."
+    )
 
-    ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
-    period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+    ticker = input("Введите тикер акции (например, 'AAPL' для Apple Inc): ")
 
-    # Получает данные о запасах
-    stock_data = dd.fetch_stock_data(ticker, period)
+    parser = argparse.ArgumentParser(description='Анализ данных о стоимости акций.')
+    parser.add_argument('--start_date', type=str, help='Дата начала в формате ГГГГ-ММ-ДД', required=False)
+    parser.add_argument('--end_date', type=str, help='Дата окончания в формате ГГГГ-ММ-ДД', required=False)
+    args = parser.parse_args()
 
-    # Проверяет, лигетивен ли DataFrame, и выводит из него среднюю цену закрытия акции
+    if not args.start_date:
+        start_date_input = input("Введите дату начала в формате ГГГГ-ММ-ДД (по умолчанию 2020-01-01): ")
+        start_date = datetime.strptime(start_date_input, '%Y-%m-%d') if start_date_input else datetime(2020, 1, 1)
+    else:
+        start_date = datetime.strptime(args.start_date, '%Y-%m-%d')
+
+    if not args.end_date:
+        end_date_input = input("Введите дату окончания в формате ГГГГ-ММ-ДД (по умолчанию текущая дата): ")
+        end_date = datetime.strptime(end_date_input, '%Y-%m-%d') if end_date_input else datetime.now()
+    else:
+        end_date = datetime.strptime(args.end_date, '%Y-%m-%d')
+
+    period = end_date - start_date
+
+    stock_data = dd.fetch_stock_data(ticker, start_date, end_date)
+
     ad.calculate_and_display_average_price(stock_data)
 
     threshold = 30
-
-    # Анализирует данные и уведомляет пользователя, если цена акций колебалась более чем на заданный процент за период.
     ad.notify_if_strong_fluctuations(stock_data, threshold)
 
     filename = "Information_about_promotions"
-
-    # Экспортирует данные в CSV файл.
     ad.export_data_to_csv(stock_data, filename)
 
-    # Добавляет дополнительные технические индикаторы
     ad.calculate_macd(stock_data)
 
-    # Добавляет скользящее среднее значение к данным
     stock_data = dd.add_moving_average(stock_data)
 
-    # Строит график данных
-    dplt.create_and_save_plot(stock_data, ticker, period)
+    # Обновляем имя файла для сохранения графика
+    plot_filename = f"{ticker}_{period.days}_days_stock_price_chart.png"
+    dplt.create_and_save_plot(stock_data, ticker, plot_filename)
 
 
 if __name__ == "__main__":
     main()
-
-
