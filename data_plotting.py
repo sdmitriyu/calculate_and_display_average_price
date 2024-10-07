@@ -1,8 +1,17 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+def create_and_save_plot(data, ticker, period, style='default', filename=None):
+    """
+    Создает и сохраняет график цен, RSI и MACD с заданным стилем оформления.
 
-def create_and_save_plot(data, ticker, period, filename=None):
+    :param data: Данные для построения графиков. Ожидается DataFrame.
+    :param ticker: Тикер акции.
+    :param period: Период данных.
+    :param style: Стиль оформления графиков. По умолчанию 'default'.
+    :param filename: Имя файла для сохранения графика. Если не указано, будет создано автоматически.
+    """
+    plt.style.use(style)
     plt.figure(figsize=(10, 18))  # Увеличенное полотно для трех графиков
 
     # График цен
@@ -19,7 +28,7 @@ def create_and_save_plot(data, ticker, period, filename=None):
         if not pd.api.types.is_datetime64_any_dtype(data['Date']):
             data['Date'] = pd.to_datetime(data['Date'])
         plt.plot(data['Date'], data['Close'], label='Close Price')
-        plt.plot(data['Date'], data['Moving_Average'], label='Moving_Average')
+        plt.plot(data['Date'], data['Moving_Average'], label='Moving Average')
 
     plt.title(f"{ticker} Цена акций с течением времени")
     plt.xlabel("Дата")
@@ -51,4 +60,7 @@ def create_and_save_plot(data, ticker, period, filename=None):
     if filename is None:
         filename = f"{ticker}_{period}_stock_price_chart.png"
     plt.savefig(filename)
+    plt.close()
     print(f"График сохранен как {filename}")
+
+

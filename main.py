@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 
 
-def main():
+def main(start_date: str = "2022-01-01", end_date: str = "2022-12-31"):
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
     print(
         "Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc)."
