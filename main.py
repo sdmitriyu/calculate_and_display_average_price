@@ -58,6 +58,8 @@ def main(start_date: str = "2022-01-01", end_date: str = "2022-12-31"):
 
     stock_data = dd.add_moving_average(stock_data)
 
+    ad.calculate_statistics(stock_data)
+
     # Обновляем имя файла для сохранения графика
     plot_filename = f"{ticker}_{period.days}_days_stock_price_chart.png"
     dplt.create_and_save_plot(stock_data, ticker, plot_filename)

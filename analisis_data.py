@@ -91,3 +91,9 @@ def calculate_macd(data, short_window=12, long_window=26, signal_window=9):
     data['Signal Line'] = data['MACD'].ewm(span=signal_window, adjust=False).mean()
 
     return data
+
+
+def calculate_statistics(data):
+    # Добавьте столбец со стандартным отклонением
+    data['Close_std'] = data['Close'].rolling(window=30).std()
+    return data
