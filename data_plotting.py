@@ -3,7 +3,6 @@ import logging
 import os
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import pandas as pd
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
