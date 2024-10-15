@@ -1,3 +1,5 @@
+import datetime
+
 import yfinance as yf
 import logging
 import os
@@ -57,9 +59,9 @@ def create_static_plot(data, ticker, period, style):
             plt.grid()
 
         # Сохранение графика в файл
-        directory = "images"
+        directory = "image"
         os.makedirs(directory, exist_ok=True)
-        filename = os.path.join(directory, f"{ticker}_{period}_stock_price_chart.png")
+        filename = os.path.join(directory, f"{ticker}_{period.days}_stock_price_chart.png")
         plt.savefig(filename)
         print(f"Статический график сохранен как {filename}!")
 

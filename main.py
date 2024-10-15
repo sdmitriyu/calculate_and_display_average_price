@@ -12,7 +12,7 @@ logging.basicConfig(
     filename='journal.log',
     filemode='w',
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    datefmt='%Y-%m-%d %H-%M-%S'
 )
 
 
@@ -33,7 +33,7 @@ def main(start_date: str = "2022-01-01", end_date: str = "2022-12-31"):
 
     if not args.start_date:
         start_date_input = input("Введите дату начала в формате ГГГГ-ММ-ДД (по умолчанию 2020-01-01): ")
-        start_date = datetime.strptime(start_date_input, '%Y-%m-%d') if start_date_input else datetime(2020, 1, 1)
+        start_date = datetime.strptime(start_date_input, '%Y-%m-%d') if start_date_input else datetime(year=2020, month=1, day=1)
     else:
         start_date = datetime.strptime(args.start_date, '%Y-%m-%d')
 
@@ -41,7 +41,7 @@ def main(start_date: str = "2022-01-01", end_date: str = "2022-12-31"):
         end_date_input = input("Введите дату окончания в формате ГГГГ-ММ-ДД (по умолчанию текущая дата): ")
         end_date = datetime.strptime(end_date_input, '%Y-%m-%d') if end_date_input else datetime.now()
     else:
-        end_date = datetime.strptime(args.end_date, '%Y-%m-%d')
+        end_date = datetime.strptime(args.end_date, __format='%Y-%m-%d')
 
     period = end_date - start_date
 
